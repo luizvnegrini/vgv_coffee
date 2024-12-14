@@ -1,0 +1,22 @@
+flavors:
+  dev:
+    app:
+      name: "Very Good Coffee App [Dev]"
+    android:
+      applicationId: "com.verygoodcoffeeapp.dev"
+    ios:
+      bundleId: "com.verygoodcoffeeapp.dev"
+  hml:
+    app:
+      name: "Very Good Coffee App [Hml]"
+    android:
+      applicationId: "com.verygoodcoffeeapp.hml"
+    ios:
+      bundleId: "com.verygoodcoffeeapp.hml"
+  prod:
+    app:
+      name: "Very Good Coffee App [Prod]"
+    android:
+      applicationId: "com.verygoodcoffeeapp.prod"
+    ios:
+      bundleId: "com.verygoodcoffeeapp.prod"
