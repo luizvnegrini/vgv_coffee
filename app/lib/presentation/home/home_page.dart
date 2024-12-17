@@ -14,14 +14,10 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    _imgKey = UniqueKey();
+    _loadNewImage();
   }
 
-  void _reloadImage() {
-    setState(() {
-      _imgKey = UniqueKey();
-    });
-  }
+  void _loadNewImage() => setState(() => _imgKey = UniqueKey());
 
   @override
   Widget build(BuildContext context) {
@@ -29,13 +25,15 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Center(
-            child: Image.network(_imgUrl, key: _imgKey),
+            child: Image.network(
+              '$_imgUrl?${_imgKey.toString()}',
+              key: _imgKey,
+            ),
           ),
           ElevatedButton(
-            onPressed: () => _reloadImage(),
+            onPressed: () => _loadNewImage(),
             child: Text('Load new image'),
           ),
-          Text(_imgKey.toString()),
         ],
       ),
     );
