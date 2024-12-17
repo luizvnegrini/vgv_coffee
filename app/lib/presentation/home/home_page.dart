@@ -24,12 +24,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          Center(
-            child: Image.network(
-              '$_imgUrl?${_imgKey.toString()}',
-              key: _imgKey,
-            ),
-          ),
+          Center(child: Image.network('$_imgUrl?${_imgKey.toString()}')),
           ElevatedButton(
             onPressed: () => _loadNewImage(),
             child: Text('Load new image'),
