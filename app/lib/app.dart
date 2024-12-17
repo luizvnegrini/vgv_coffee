@@ -1,5 +1,6 @@
 import 'package:external_dependencies/external_dependencies.dart';
 import 'package:flutter/material.dart';
+import 'package:vgv_coffee/domain/domain.dart';
 
 import 'core/core.dart';
 import 'presentation/presentation.dart';
@@ -7,6 +8,8 @@ import 'presentation/presentation.dart';
 class Startup {
   static Future<void> run() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    await initDependencyInjectionContainer();
 
     runApp(_App());
     FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -29,7 +32,9 @@ class _App extends StatelessWidget {
         useMaterial3: true,
       ),
       home: BlocProvider(
-        create: (context) => HomePageBloc(),
+        create: (context) => HomePageBloc(
+          saveImageUsecase: GetIt.I<SaveImageUsecase>(),
+        ),
         child: HomePage(),
       ),
     );
