@@ -4,8 +4,14 @@ import '../domain/domain.dart';
 
 final _instance = GetIt.instance;
 
-// Função para registrar as dependências
-Future<void> initDependencyInjectionContainer() async {
+void setupDependencyInjectionContainer() {
+  _setupDomain();
+}
+
+void _setupDomain() {
+  // Usecases
   _instance
       .registerLazySingleton<SaveImageUsecase>(() => SaveImageUsecaseImpl());
+  _instance.registerLazySingleton<GetPermissionUsecase>(
+      () => GetPermissionUsecaseImpl());
 }

@@ -1,10 +1,8 @@
 abstract class SaveImageUsecase {
-  Future<void> saveImage();
+  Future<void> call();
 }
 
 class SaveImageUsecaseImpl implements SaveImageUsecase {
   @override
-  Future<void> saveImage() async {
-    await Future.delayed(const Duration(seconds: 1));
-  }
+  Future<void> call() async => {};
 }

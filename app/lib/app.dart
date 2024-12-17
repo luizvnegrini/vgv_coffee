@@ -9,7 +9,7 @@ class Startup {
   static Future<void> run() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-    await initDependencyInjectionContainer();
+    setupDependencyInjectionContainer();
 
     runApp(_App());
     FlutterError.demangleStackTrace = (StackTrace stack) {
@@ -34,6 +34,7 @@ class _App extends StatelessWidget {
       home: BlocProvider(
         create: (context) => HomePageBloc(
           saveImageUsecase: GetIt.I<SaveImageUsecase>(),
+          getPermissionUsecase: GetIt.I<GetPermissionUsecase>(),
         ),
         child: HomePage(),
       ),
