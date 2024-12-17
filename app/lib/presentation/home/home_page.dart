@@ -11,12 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final HomePageBloc _bloc;
   final String _imgUrl = 'https://coffee.alexflipnote.dev/random';
   late Key _imgKey;
 
   @override
   void initState() {
     super.initState();
+    _bloc = context.read<HomePageBloc>();
     _loadNewImage();
   }
 
@@ -40,7 +42,7 @@ class _HomePageState extends State<HomePage> {
             child: Text('Next image'),
           ),
           ElevatedButton(
-            onPressed: () => context.read<HomePageBloc>().saveImage(),
+            onPressed: () => _bloc.saveImage(),
             child: Text('Save image'),
           ),
         ],
