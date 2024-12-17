@@ -2,7 +2,7 @@ import 'package:external_dependencies/external_dependencies.dart';
 import 'package:flutter/material.dart';
 
 import 'core/core.dart';
-import 'presentation/home/home_page.dart';
+import 'presentation/presentation.dart';
 
 class Startup {
   static Future<void> run() async {
@@ -28,7 +28,10 @@ class _App extends StatelessWidget {
         primarySwatch: Colors.brown,
         useMaterial3: true,
       ),
-      home: HomePage(),
+      home: BlocProvider(
+        create: (context) => HomePageBloc(),
+        child: HomePage(),
+      ),
     );
   }
 }

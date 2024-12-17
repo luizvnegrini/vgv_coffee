@@ -1,4 +1,7 @@
+import 'package:external_dependencies/external_dependencies.dart';
 import 'package:flutter/material.dart';
+
+import 'home.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -24,10 +27,21 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: [
-          Center(child: Image.network('$_imgUrl?${_imgKey.toString()}')),
+          Center(
+              child: BlocListener<HomePageBloc, HomePageState>(
+            listener: (context, state) => state.maybeWhen(
+              imageSavedState: () => _loadNewImage(),
+              orElse: () {},
+            ),
+            child: Image.network('$_imgUrl?${_imgKey.toString()}'),
+          )),
           ElevatedButton(
             onPressed: () => _loadNewImage(),
-            child: Text('Load new image'),
+            child: Text('Next image'),
+          ),
+          ElevatedButton(
+            onPressed: () => context.read<HomePageBloc>().saveImage(),
+            child: Text('Save image'),
           ),
         ],
       ),
