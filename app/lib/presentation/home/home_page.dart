@@ -1,4 +1,5 @@
 import 'package:external_dependencies/external_dependencies.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'home.dart';
@@ -12,17 +13,12 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final HomePageBloc _bloc;
-  final String _imgUrl = 'https://coffee.alexflipnote.dev/random';
-  late Key _imgKey;
 
   @override
   void initState() {
     super.initState();
-    _bloc = context.read<HomePageBloc>();
-    _loadNewImage();
+    _bloc = context.read<HomePageBloc>()..loadNewImage();
   }
-
-  void _loadNewImage() => setState(() => _imgKey = UniqueKey());
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +26,35 @@ class _HomePageState extends State<HomePage> {
       body: Column(
         children: [
           Center(
-              child: BlocListener<HomePageBloc, HomePageState>(
-            listener: (context, state) => state.maybeWhen(
-              imageSavedState: () => _loadNewImage(),
-              orElse: () {},
+            child: BlocConsumer<HomePageBloc, HomePageState>(
+              listener: (_, state) => state.maybeWhen(
+                imageSaved: () => _bloc.loadNewImage(),
+                orElse: () => {},
+              ),
+              builder: (_, state) => state.maybeWhen(
+                orElse: () => const CircularProgressIndicator(),
+                error: () => const Text('Error please try again later'),
+                imageLoaded: (image) => Image.memory(image),
+              ),
             ),
-            child: Image.network('$_imgUrl?${_imgKey.toString()}'),
-          )),
-          ElevatedButton(
-            onPressed: () => _loadNewImage(),
-            child: Text('Next image'),
           ),
           ElevatedButton(
-            onPressed: () => _bloc.saveImage(),
-            child: Text('Save image'),
+            onPressed: () => _bloc.loadNewImage(),
+            child: Text('Next image'),
+          ),
+          BlocSelector<HomePageBloc, HomePageState, Uint8List?>(
+            selector: (state) {
+              return state.maybeWhen(
+                imageLoaded: (img) => img,
+                orElse: () => null,
+              );
+            },
+            builder: (_, img) {
+              return ElevatedButton(
+                onPressed: () => img != null ? _bloc.saveImage(img) : null,
+                child: Text('Save image'),
+              );
+            },
           ),
         ],
       ),

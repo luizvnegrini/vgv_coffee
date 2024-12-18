@@ -7,12 +7,12 @@ abstract class GetPermissionUsecase {
 class GetPermissionUsecaseImpl implements GetPermissionUsecase {
   @override
   Future<bool> call() async {
-    final isGranted = await Permission.photos.request().isGranted;
+    final permission = await PhotoManager.requestPermissionExtend();
 
-    if (!isGranted) {
-      await openAppSettings();
+    if (!permission.isAuth) {
+      await PhotoManager.openSetting();
     }
 
-    return isGranted;
+    return permission.isAuth;
   }
 }

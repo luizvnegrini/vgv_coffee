@@ -1,81 +1,143 @@
+import 'dart:typed_data';
+
+import 'package:flutter/foundation.dart';
+
 sealed class HomePageState {
-  const HomePageState._();
+  const HomePageState();
 
-  const factory HomePageState.initial() = _InitialState;
-  const factory HomePageState.loading() = _LoadingState;
-  const factory HomePageState.imageSaved() = _ImageSavedState;
+  const factory HomePageState.loading() = LoadingNewImageState;
+  const factory HomePageState.imageLoaded(Uint8List image) = ImageLoadedState;
+  const factory HomePageState.imageSaved() = ImageSavedState;
+  const factory HomePageState.error() = ErrorState;
 
-  /// `when` and `maybeWhen` methods
-  R when<R>({
-    required R Function() initial,
-    required R Function() loading,
-    required R Function() imageSaved,
-  }) =>
-      switch (this) {
-        _InitialState() => initial(),
-        _LoadingState() => loading(),
-        _ImageSavedState() => imageSaved(),
-      };
+  T when<T>({
+    required T Function() loadingNewImage,
+    required T Function(Uint8List image) imageLoaded,
+    required T Function() imageSaved,
+    required T Function() error,
+  });
 
-  R maybeWhen<R>({
-    R Function()? initial,
-    R Function()? loading,
-    R Function()? imageSavedState,
-    required R Function() orElse,
-  }) {
-    final handler = switch (this) {
-      _InitialState() => initial,
-      _LoadingState() => loading,
-      _ImageSavedState() => imageSavedState,
-    };
-    return handler?.call() ?? orElse();
-  }
-
-  R map<R>({
-    required R Function() initial,
-    required R Function() loading,
-    required R Function() imageSaved,
-  }) =>
-      switch (this) {
-        _InitialState() => initial(),
-        _LoadingState() => loading(),
-        _ImageSavedState() => imageSaved(),
-      };
-
-  R maybeMap<R>({
-    R Function()? initial,
-    R Function()? loading,
-    R Function()? imageSaved,
-    required R Function() orElse,
-  }) {
-    final handler = switch (this) {
-      _InitialState() => initial,
-      _LoadingState() => loading,
-      _ImageSavedState() => imageSaved,
-    };
-    return handler?.call() ?? orElse();
-  }
+  T maybeWhen<T>({
+    T Function()? loadingNewImage,
+    T Function(Uint8List image)? imageLoaded,
+    T Function()? imageSaved,
+    T Function()? error,
+    required T Function() orElse,
+  });
 
   HomePageState copyWith();
 }
 
-final class _InitialState extends HomePageState {
-  const _InitialState() : super._();
+final class LoadingNewImageState extends HomePageState {
+  const LoadingNewImageState();
 
   @override
-  HomePageState copyWith() => const _InitialState();
+  T when<T>({
+    required T Function() loadingNewImage,
+    required T Function(Uint8List image) imageLoaded,
+    required T Function() imageSaved,
+    required T Function() error,
+  }) {
+    return loadingNewImage();
+  }
+
+  @override
+  T maybeWhen<T>({
+    T Function()? loadingNewImage,
+    T Function(Uint8List image)? imageLoaded,
+    T Function()? imageSaved,
+    T Function()? error,
+    required T Function() orElse,
+  }) {
+    return loadingNewImage?.call() ?? orElse();
+  }
+
+  @override
+  HomePageState copyWith() => const LoadingNewImageState();
 }
 
-final class _LoadingState extends HomePageState {
-  const _LoadingState() : super._();
+final class ImageLoadedState extends HomePageState {
+  final Uint8List image;
+
+  const ImageLoadedState(this.image);
 
   @override
-  HomePageState copyWith() => const _LoadingState();
+  T when<T>({
+    required T Function() loadingNewImage,
+    required T Function(Uint8List image) imageLoaded,
+    required T Function() imageSaved,
+    required T Function() error,
+  }) {
+    return imageLoaded(image);
+  }
+
+  @override
+  T maybeWhen<T>({
+    T Function()? loadingNewImage,
+    T Function(Uint8List image)? imageLoaded,
+    T Function()? imageSaved,
+    T Function()? error,
+    required T Function() orElse,
+  }) {
+    return imageLoaded?.call(image) ?? orElse();
+  }
+
+  @override
+  HomePageState copyWith() => ImageLoadedState(Uint8List.fromList(image));
 }
 
-final class _ImageSavedState extends HomePageState {
-  const _ImageSavedState() : super._();
+final class ImageSavedState extends HomePageState {
+  const ImageSavedState();
 
   @override
-  HomePageState copyWith() => const _ImageSavedState();
+  T when<T>({
+    required T Function() loadingNewImage,
+    required T Function(Uint8List image) imageLoaded,
+    required T Function() imageSaved,
+    required T Function() error,
+  }) {
+    return imageSaved();
+  }
+
+  @override
+  T maybeWhen<T>({
+    T Function()? loadingNewImage,
+    T Function(Uint8List image)? imageLoaded,
+    T Function()? imageSaved,
+    T Function()? error,
+    required T Function() orElse,
+  }) {
+    return imageSaved?.call() ?? orElse();
+  }
+
+  @override
+  HomePageState copyWith() => const ImageSavedState();
+}
+
+final class ErrorState extends HomePageState {
+  const ErrorState();
+
+  @override
+  T when<T>({
+    required T Function() loadingNewImage,
+    required T Function(Uint8List image) imageLoaded,
+    required T Function() imageSaved,
+    required T Function() error,
+  }) {
+    return error();
+  }
+
+  @override
+  T maybeWhen<T>({
+    T Function()? loadingNewImage,
+    T Function(Uint8List image)? imageLoaded,
+    T Function()? imageSaved,
+    T Function()? error,
+    required T Function() orElse,
+  }) {
+    return error?.call() ?? orElse();
+  }
+
+  @override
+  HomePageState copyWith() => const ErrorState();
 }
