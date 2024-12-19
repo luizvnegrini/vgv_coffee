@@ -59,13 +59,17 @@ class _HomePageState extends State<HomePage> {
                   return state.maybeWhen(
                     orElse: () => const SizedBox.shrink(),
                     error: () => const Text('Error when load album'),
-                    coffeeAlbumLoaded: (imgs) =>
-                        FanCarouselImageSlider.sliderType2(
-                      imagesLink: imgs,
-                      isAssets: true,
-                      imageFitMode: BoxFit.cover,
-                      userCanDrag: true,
-                    ),
+                    coffeeAlbumLoaded: (imgs) {
+                      if (imgs.isEmpty) return const SizedBox.shrink();
+
+                      return FanCarouselImageSlider.sliderType2(
+                        initalPageIndex: 0,
+                        imagesLink: imgs,
+                        isAssets: true,
+                        imageFitMode: BoxFit.cover,
+                        userCanDrag: true,
+                      );
+                    },
                   );
                 },
               ),

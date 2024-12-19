@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:external_dependencies/external_dependencies.dart';
 
 abstract class LoadCoffeeAlbumUsecase {
@@ -9,17 +7,19 @@ abstract class LoadCoffeeAlbumUsecase {
 class LoadCoffeeAlbumUsecaseImpl implements LoadCoffeeAlbumUsecase {
   @override
   Future<Either<Exception, List<String>>> call() async {
-    List<String> paths = [];
-    final count = await PhotoManager.getAssetCount(type: RequestType.image);
-    final List<AssetPathEntity> albums = await PhotoManager.getAssetPathList(
-      type: RequestType.image,
-    );
+    await PhotoManager.requestPermissionExtend();
+    final List<String> paths = [];
+    final albums = await PhotoManager.getAssetPathList(type: RequestType.image);
 
-    final assets = await albums[0].getAssetListRange(start: 0, end: count);
+    final album = albums.firstWhere((e) => e.name == 'coffee');
+    final assetCount = await album.assetCountAsync;
 
-    for (final asset in assets) {
-      final File? file = await asset.file;
-      paths.add(file?.path ?? '');
+    if (assetCount > 0) {
+      final assets = await album.getAssetListRange(start: 0, end: assetCount);
+
+      await Future.wait(
+        assets.map((asset) async => paths.add((await asset.file)?.path ?? '')),
+      );
     }
 
     return Right(paths);
