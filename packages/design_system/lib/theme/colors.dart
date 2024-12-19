@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
 class ThemeColors {
-  Color get primary => const Color.fromRGBO(0, 28, 149, 1);
+  Color get primary => const Color(0xFF6F4E37);
+  Color get secondary => const Color(0xFFD2B48C);
 }

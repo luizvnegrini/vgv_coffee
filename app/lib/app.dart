@@ -1,3 +1,4 @@
+import 'package:design_system/theme/theme.dart';
 import 'package:external_dependencies/external_dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:vgv_coffee/domain/domain.dart';
@@ -27,10 +28,7 @@ class _App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: F.title,
-      theme: ThemeData(
-        primarySwatch: Colors.brown,
-        useMaterial3: true,
-      ),
+      theme: buildCoffeeTheme(),
       home: BlocProvider(
         create: (context) => HomePageBloc(
           loadCoffeeAlbumUsecase: GetIt.I<LoadCoffeeAlbumUsecase>(),

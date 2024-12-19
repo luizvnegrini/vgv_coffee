@@ -10,6 +10,7 @@ sealed class HomePageState {
       ImageLoadedState;
   const factory HomePageState.imageSaved() = ImageSavedState;
   const factory HomePageState.error() = ErrorState;
+  const factory HomePageState.loadingCoffeeAlbum() = LoadingCoffeeAlbum;
   const factory HomePageState.coffeeAlbumLoaded(List<String> coffeeAlbum) =
       CoffeeAlbumLoadedState;
 
@@ -19,6 +20,7 @@ sealed class HomePageState {
     required T Function() imageSaved,
     required T Function() error,
     required T Function(List<String> coffeeAlbum) coffeeAlbumLoaded,
+    required T Function() loadingCoffeeAlbum,
   }) {
     return switch (this) {
       LoadingNewImageState() => loadingNewImage(),
@@ -27,6 +29,7 @@ sealed class HomePageState {
       ErrorState() => error(),
       CoffeeAlbumLoadedState(coffeeAlbum: final coffeeAlbum) =>
         coffeeAlbumLoaded(coffeeAlbum),
+      LoadingCoffeeAlbum() => loadingCoffeeAlbum(),
     };
   }
 
@@ -36,6 +39,7 @@ sealed class HomePageState {
     T Function()? imageSaved,
     T Function()? error,
     T Function(List<String> coffeeAlbum)? coffeeAlbumLoaded,
+    T Function()? loadingCoffeeAlbum,
     required T Function() orElse,
   }) {
     return switch (this) {
@@ -46,6 +50,7 @@ sealed class HomePageState {
       ErrorState() => error?.call() ?? orElse(),
       CoffeeAlbumLoadedState(coffeeAlbum: final coffeeAlbum) =>
         coffeeAlbumLoaded?.call(coffeeAlbum) ?? orElse(),
+      LoadingCoffeeAlbum() => loadingCoffeeAlbum?.call() ?? orElse(),
     };
   }
 
@@ -57,6 +62,7 @@ sealed class HomePageState {
       ErrorState() => const ErrorState(),
       CoffeeAlbumLoadedState(coffeeAlbum: final coffeeAlbum) =>
         CoffeeAlbumLoadedState(coffeeAlbum),
+      LoadingCoffeeAlbum() => const LoadingCoffeeAlbum(),
     };
   }
 }
@@ -83,4 +89,8 @@ final class CoffeeAlbumLoadedState extends HomePageState {
   final List<String> coffeeAlbum;
 
   const CoffeeAlbumLoadedState(this.coffeeAlbum);
+}
+
+final class LoadingCoffeeAlbum extends HomePageState {
+  const LoadingCoffeeAlbum();
 }

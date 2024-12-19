@@ -21,6 +21,8 @@ class HomePageBloc extends BlocBase<HomePageState> {
         super(const HomePageState.loading());
 
   Future<void> loadCoffeeAlbum() async {
+    emit(const HomePageState.loadingCoffeeAlbum());
+
     final result = await _loadCoffeeAlbumUsecase();
 
     final newState = result.fold(
