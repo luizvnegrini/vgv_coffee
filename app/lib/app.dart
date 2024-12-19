@@ -33,6 +33,7 @@ class _App extends StatelessWidget {
       ),
       home: BlocProvider(
         create: (context) => HomePageBloc(
+          loadCoffeeAlbumUsecase: GetIt.I<LoadCoffeeAlbumUsecase>(),
           loadNewImageUsecase: GetIt.I<LoadNewImageUsecase>(),
           saveImageUsecase: GetIt.I<SaveImageUsecase>(),
           getPermissionUsecase: GetIt.I<GetPermissionUsecase>(),

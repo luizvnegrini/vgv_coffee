@@ -9,11 +9,11 @@ class HttpAdapterImpl implements HttpAdapter {
   HttpAdapterImpl(this._http);
 
   @override
-  Future<Uint8List> downloadImage(String url) async {
+  Future<(Uint8List, String)> downloadImage(String url) async {
     final response = await _http.client.get(
       Uri.parse(url),
     );
 
-    return response.bodyBytes;
+    return (response.bodyBytes, response.headers['content-type']!);
   }
 }

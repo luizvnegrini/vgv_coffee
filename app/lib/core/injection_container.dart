@@ -35,5 +35,8 @@ void _setupDomain() {
     ..registerLazySingleton<SaveImageUsecase>(() => SaveImageUsecaseImpl())
     ..registerLazySingleton<GetPermissionUsecase>(
       () => GetPermissionUsecaseImpl(),
+    )
+    ..registerLazySingleton<LoadCoffeeAlbumUsecase>(
+      () => LoadCoffeeAlbumUsecaseImpl(),
     );
 }

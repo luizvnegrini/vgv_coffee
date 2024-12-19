@@ -3,8 +3,6 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - photo_gallery (0.0.1):
-    - Flutter
   - photo_manager (2.0.0):
     - Flutter
     - FlutterMacOS
@@ -12,7 +10,6 @@ PODS:
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - photo_gallery (from `.symlinks/plugins/photo_gallery/ios`)
   - photo_manager (from `.symlinks/plugins/photo_manager/ios`)
 
 EXTERNAL SOURCES:
@@ -20,15 +17,12 @@ EXTERNAL SOURCES:
     :path: Flutter
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  photo_gallery:
-    :path: ".symlinks/plugins/photo_gallery/ios"
   photo_manager:
     :path: ".symlinks/plugins/photo_manager/ios"
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
-  photo_gallery: 9f95e57747cd22c10676ece3660d1ffe6c603ee5
   photo_manager: ff695c7a1dd5bc379974953a2b5c0a293f7c4c8a
 
 PODFILE CHECKSUM: 6d2182a9d8c0b1d482f5832e1062f81fadc8ee84

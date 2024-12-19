@@ -2,6 +2,7 @@ library external_dependencies;
 
 export 'package:dartz/dartz.dart' hide State;
 export 'package:equatable/equatable.dart';
+export 'package:fan_carousel_image_slider/fan_carousel_image_slider.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:get_it/get_it.dart';
 export 'package:intl/intl.dart';

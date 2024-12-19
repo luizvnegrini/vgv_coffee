@@ -12,7 +12,7 @@ class CoffeeImageRepositoryImpl implements CoffeeImageRepository {
   });
 
   @override
-  Future<Either<Exception, Uint8List>> loadNewImage() async {
+  Future<Either<Exception, (Uint8List, String)>> loadNewImage() async {
     try {
       final image = await datasource.loadNewImage();
       return Right(image);

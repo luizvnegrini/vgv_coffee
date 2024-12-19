@@ -8,15 +8,28 @@ class HomePageBloc extends BlocBase<HomePageState> {
   final LoadNewImageUsecase _loadNewImageUsecase;
   final SaveImageUsecase _saveImageUsecase;
   final GetPermissionUsecase _getPermissionUsecase;
-
+  final LoadCoffeeAlbumUsecase _loadCoffeeAlbumUsecase;
   HomePageBloc({
     required LoadNewImageUsecase loadNewImageUsecase,
     required SaveImageUsecase saveImageUsecase,
     required GetPermissionUsecase getPermissionUsecase,
+    required LoadCoffeeAlbumUsecase loadCoffeeAlbumUsecase,
   })  : _loadNewImageUsecase = loadNewImageUsecase,
         _saveImageUsecase = saveImageUsecase,
         _getPermissionUsecase = getPermissionUsecase,
+        _loadCoffeeAlbumUsecase = loadCoffeeAlbumUsecase,
         super(const HomePageState.loading());
+
+  Future<void> loadCoffeeAlbum() async {
+    final result = await _loadCoffeeAlbumUsecase();
+
+    final newState = result.fold(
+      (l) => const HomePageState.error(),
+      (r) => HomePageState.coffeeAlbumLoaded(r),
+    );
+
+    emit(newState);
+  }
 
   Future<void> loadNewImage() async {
     emit(const HomePageState.loading());
@@ -30,13 +43,13 @@ class HomePageBloc extends BlocBase<HomePageState> {
     emit(newState);
   }
 
-  Future<void> saveImage(Uint8List rawData) async {
+  Future<void> saveImage((Uint8List, String) data) async {
     emit(const HomePageState.loading());
 
     final isGranted = await _getPermissionUsecase();
 
     if (isGranted) {
-      final result = await _saveImageUsecase(rawData);
+      final result = await _saveImageUsecase(data);
       final newState = result.fold(
         (l) => const HomePageState.error(),
         (_) => const HomePageState.imageSaved(),
