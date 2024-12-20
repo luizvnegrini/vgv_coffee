@@ -52,13 +52,31 @@ class _HomePageState extends State<HomePage>
 
   void _changePage(int newPage) => setState(() => _currentPage = newPage);
 
+  void _showSnackBar(BuildContext context, String message) {
+    final snackBar = CustomSnackBar(
+      message: message,
+      backgroundColor: context.colors.primary,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      snackBar,
+      snackBarAnimationStyle: AnimationStyle(
+        curve: Curves.elasticIn,
+        duration: 3.seconds,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(18);
 
     return BlocListener<HomePageBloc, HomePageState>(
       listener: (_, state) => state.maybeWhen(
-        imageSaved: () => _bloc.loadNewImage(),
+        imageSaved: () {
+          _bloc.loadNewImage();
+          _showSnackBar(context, 'Image saved on Coffee album');
+        },
         orElse: () => {},
       ),
       child: Scaffold(
@@ -86,56 +104,40 @@ class _HomePageState extends State<HomePage>
                   insets: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 ),
                 tabs: [
-                  SizedBox(
+                  NavbarButton(
                     height: _iconHeight,
                     width: _iconWidth,
-                    child: Center(
-                      child: Icon(
-                        Icons.photo_album,
-                        color: context.colors.primary,
-                      ),
-                    ),
+                    icon: Icons.photo_album,
                   ),
-                  SizedBox(
+                  NavbarButton(
                     height: _iconHeight,
                     width: _iconWidth,
-                    child: Icon(
-                      Icons.star,
-                      color: Colors.transparent,
-                    ),
+                    icon: Icons.star,
+                    color: Colors.transparent,
                   ),
-                  SizedBox(
-                    height: _iconHeight,
-                    width: _iconWidth,
-                    child: Center(
-                      child: BlocBuilder<HomePageBloc, HomePageState>(
-                        buildWhen: (previous, current) => current.maybeWhen(
-                          loadingNewImage: () => true,
-                          imageLoaded: (_) => true,
-                          orElse: () => false,
-                        ),
-                        builder: (context, state) {
-                          return state.maybeWhen(
-                            orElse: () => GestureDetector(
-                              onTap: () {
-                                _bloc.loadNewImage();
-                                _tabController.animateTo(1);
-                              },
-                              child: Icon(
-                                Icons.next_plan,
-                                color: context.colors.primary,
-                              ),
-                            ),
-                            loadingNewImage: () => SizedBox(
-                              height: 16,
-                              width: 16,
-                              child: CircularProgressIndicator(strokeWidth: 2),
-                            ),
-                          );
+                  BlocBuilder<HomePageBloc, HomePageState>(
+                    buildWhen: (previous, current) => current.maybeWhen(
+                      loadingNewImage: () => true,
+                      imageLoaded: (_) => true,
+                      orElse: () => false,
+                    ),
+                    builder: (_, state) => state.maybeWhen(
+                      orElse: () => GestureDetector(
+                        onTap: () {
+                          _bloc.loadNewImage();
+                          _tabController.animateTo(1);
                         },
+                        child: NavbarButton(
+                          icon: Icons.next_plan,
+                        ),
+                      ),
+                      loadingNewImage: () => SizedBox(
+                        height: 16,
+                        width: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
               Positioned(
