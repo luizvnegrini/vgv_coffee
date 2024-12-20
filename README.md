@@ -3,6 +3,7 @@
 This project is a simple Flutter application developed for a technical test. It demonstrates the ability to load random coffee images and save them to the photo gallery. The app allows users to interact with the interface to load new images and manage their coffee album. This showcases the developer's skills in implementing state management, image handling, and user interactions in Flutter.
 
 # Demo
+https://github.com/user-attachments/assets/f6228fa2-f816-4c3c-aa65-6595fee734d2
 
 ## Main Technologies
 - Flutter
