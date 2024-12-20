@@ -9,6 +9,10 @@ class GalleryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (imgs.isEmpty) {
+      return Center(child: const Text("No images found"));
+    }
+
     final backgroundImg = imgs.first;
 
     return Scaffold(

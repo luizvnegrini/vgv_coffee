@@ -75,6 +75,7 @@ class _HomePageState extends State<HomePage>
       listener: (_, state) => state.maybeWhen(
         imageSaved: () {
           _bloc.loadNewImage();
+          _bloc.loadCoffeeAlbum();
           _showSnackBar(context, 'Image saved on Coffee album');
         },
         orElse: () => {},
