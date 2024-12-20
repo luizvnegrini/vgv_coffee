@@ -12,11 +12,6 @@ class CustomSnackBar extends SnackBar {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(18),
           ),
-          action: SnackBarAction(
-            label: 'Close',
-            textColor: Colors.white,
-            onPressed: () {},
-          ),
           duration: const Duration(seconds: 1),
         );
 }
