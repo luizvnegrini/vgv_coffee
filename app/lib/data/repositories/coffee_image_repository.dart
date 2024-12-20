@@ -5,6 +5,8 @@ import '../../domain/domain.dart';
 import '../datasource/datasource.dart';
 
 class CoffeeImageRepositoryImpl implements CoffeeImageRepository {
+  final String _albumName = 'coffee';
+
   final CoffeeImageDatasource datasource;
 
   CoffeeImageRepositoryImpl({
@@ -16,6 +18,30 @@ class CoffeeImageRepositoryImpl implements CoffeeImageRepository {
     try {
       final image = await datasource.loadNewImage();
       return Right(image);
+    } catch (e) {
+      return Left(Exception(e));
+    }
+  }
+
+  @override
+  Future<Either<Exception, List<String>>> loadAlbum() async {
+    try {
+      final images = await datasource.loadAlbum(_albumName);
+      return Right(images);
+    } catch (e) {
+      return Left(Exception(e));
+    }
+  }
+
+  @override
+  Future<Either<Exception, Unit>> saveImage((Uint8List, String) data) async {
+    try {
+      await datasource.saveImage(
+        albumName: _albumName,
+        data: data,
+      );
+
+      return Right(unit);
     } catch (e) {
       return Left(Exception(e));
     }

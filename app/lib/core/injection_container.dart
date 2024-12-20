@@ -13,15 +13,23 @@ void setupDependencyInjectionContainer() {
 
 void _setupDomain() {
   // Adapters
-  _instance.registerLazySingleton<HttpAdapter>(
-    () => HttpAdapterImpl(
-      HttpInstance(),
-    ),
-  );
+  _instance
+    ..registerLazySingleton<HttpAdapter>(
+      () => HttpAdapterImpl(
+        HttpInstance(),
+      ),
+    )
+    ..registerLazySingleton<PhotoStorageAdapter>(
+      () => PhotoManagerAdapterImpl(),
+    );
 
   // Datasources
   _instance.registerLazySingleton<CoffeeImageDatasource>(
-      () => CoffeeImageDatasourceImpl(httpClient: _instance()));
+    () => CoffeeImageDatasourceImpl(
+      httpClient: _instance(),
+      photoStorageAdapter: _instance(),
+    ),
+  );
 
   // Repositories
   _instance.registerLazySingleton<CoffeeImageRepository>(
@@ -32,11 +40,15 @@ void _setupDomain() {
     ..registerLazySingleton<LoadNewImageUsecase>(
       () => LoadNewImageUsecaseImpl(repository: _instance()),
     )
-    ..registerLazySingleton<SaveImageUsecase>(() => SaveImageUsecaseImpl())
+    ..registerLazySingleton<SaveImageUsecase>(() => SaveImageUsecaseImpl(
+          repository: _instance(),
+        ))
     ..registerLazySingleton<GetPermissionUsecase>(
       () => GetPermissionUsecaseImpl(),
     )
     ..registerLazySingleton<LoadCoffeeAlbumUsecase>(
-      () => LoadCoffeeAlbumUsecaseImpl(),
+      () => LoadCoffeeAlbumUsecaseImpl(
+        repository: _instance(),
+      ),
     );
 }
