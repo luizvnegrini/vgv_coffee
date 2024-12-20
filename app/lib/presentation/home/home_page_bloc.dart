@@ -27,7 +27,7 @@ class HomePageBloc extends BlocBase<HomePageState> {
 
     final newState = result.fold(
       (l) => const HomePageState.error(),
-      (r) => HomePageState.coffeeAlbumLoaded(r),
+      HomePageState.coffeeAlbumLoaded,
     );
 
     emit(newState);
@@ -39,7 +39,7 @@ class HomePageBloc extends BlocBase<HomePageState> {
     final result = await _loadNewImageUsecase();
     final newState = result.fold(
       (l) => const HomePageState.error(),
-      (r) => HomePageState.imageLoaded(r),
+      HomePageState.imageLoaded,
     );
 
     emit(newState);
